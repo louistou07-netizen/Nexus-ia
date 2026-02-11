@@ -7,11 +7,13 @@ const getAIClient = () => {
 
 export const generateNexusResponse = async (prompt: string, systemInstruction?: string) => {
   const ai = getAIClient();
+  const defaultInstruction = "You are Nexus IA, a helpful and highly intelligent assistant. When providing code or scripts, ALWAYS use markdown code blocks and ALWAYS specify the language name (e.g., ```python, ```javascript, ```java).";
+  
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
     contents: prompt,
     config: {
-      systemInstruction: systemInstruction || "You are Nexus IA, a helpful and highly intelligent assistant.",
+      systemInstruction: systemInstruction || defaultInstruction,
       temperature: 0.7,
       topP: 0.95,
     },
@@ -61,7 +63,6 @@ export const generateNexusSpeech = async (text: string, voiceName: string = 'Kor
 
 export const analyzeImage = async (imageB64: string, prompt: string) => {
   const ai = getAIClient();
-  // Image data needs to be stripped of data:image/png;base64, prefix for the API
   const pureBase64 = imageB64.split(',')[1];
   
   const response = await ai.models.generateContent({

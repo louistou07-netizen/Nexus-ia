@@ -6,6 +6,7 @@ export enum NexusModule {
   VOICE = 'voice',
   LENS = 'lens',
   PROFILE = 'profile',
+  SETTINGS = 'settings',
   AUTH = 'auth'
 }
 
