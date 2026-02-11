@@ -24,7 +24,6 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
   const [success, setSuccess] = useState(false);
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
 
-  // Emails reconnus comme "Créateur"
   const CREATOR_EMAILS = ['louistou07@gmail.com', 'louis.toupin@icloud.com'];
   const CREATOR_USERNAME = 'the_creator';
 
@@ -52,12 +51,12 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
         let existingUser = users.find(u => u.email.toLowerCase() === emailLower);
         
         if (existingUser) {
-          // Mise à jour forcée si c'est le créateur qui se connecte
           if (CREATOR_EMAILS.includes(existingUser.email.toLowerCase())) {
             existingUser.tier = 'elite';
             existingUser.credits = 999999;
             existingUser.username = CREATOR_USERNAME;
           }
+          existingUser.lastActive = Date.now();
           localStorage.setItem('nexus_user', JSON.stringify(existingUser));
           setSuccess(true);
           setTimeout(() => onLogin(existingUser), 800);
@@ -66,14 +65,12 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
           setIsLoading(false);
         }
       } else {
-        // VÉRIFICATION PSEUDO UNIQUE
         if (users.some(u => u.username.toLowerCase() === formData.username.toLowerCase())) {
           setError("Ce pseudo est déjà existant. Choisissez-en un autre.");
           setIsLoading(false);
           return;
         }
 
-        // VÉRIFICATION EMAIL UNIQUE
         if (users.some(u => u.email.toLowerCase() === emailLower)) {
           setError("Cet e-mail est déjà enregistré dans le Nexus.");
           setIsLoading(false);
@@ -90,7 +87,9 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
           credits: isCreator ? 999999 : 50,
           avatar: isCreator 
             ? `https://api.dicebear.com/7.x/bottts/svg?seed=creator&backgroundColor=b6e3f4`
-            : `https://api.dicebear.com/7.x/avataaars/svg?seed=${formData.username || formData.email}`
+            : `https://api.dicebear.com/7.x/avataaars/svg?seed=${formData.username || formData.email}`,
+          lastActive: Date.now(),
+          registeredAt: Date.now()
         };
         
         saveUser(newUser);
@@ -109,7 +108,9 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
       email: 'demo@nexus.ia',
       tier: 'basic',
       credits: 99,
-      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=demo`
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=demo`,
+      lastActive: Date.now(),
+      registeredAt: Date.now()
     };
     setTimeout(() => {
       localStorage.setItem('nexus_user', JSON.stringify(demoUser));

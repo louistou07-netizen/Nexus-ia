@@ -7,7 +7,8 @@ export enum NexusModule {
   LENS = 'lens',
   PROFILE = 'profile',
   SETTINGS = 'settings',
-  AUTH = 'auth'
+  AUTH = 'auth',
+  ADMIN = 'admin'
 }
 
 export type UserTier = 'basic' | 'elite';
@@ -19,6 +20,8 @@ export interface User {
   tier: UserTier;
   credits: number;
   avatar: string;
+  lastActive?: number; // Timestamp de dernière activité
+  registeredAt?: number;
 }
 
 export interface Message {

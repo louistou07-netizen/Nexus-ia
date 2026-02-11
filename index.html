@@ -3,14 +3,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus IA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Nexus IA — L'intelligence artificielle sans limites</title>
+    
+    <!-- SEO & Social Sharing (OpenGraph) -->
+    <meta name="description" content="Plateforme IA tout-en-un : Chat intelligent, Génération d'images, Synthèse vocale et Analyse visuelle.">
+    <meta property="og:title" content="Nexus IA">
+    <meta property="og:description" content="Accédez à la puissance de l'IA nouvelle génération.">
+    <meta property="og:image" content="https://api.dicebear.com/7.x/bottts/svg?seed=nexus&backgroundColor=6366f1">
+    <meta property="og:type" content="website">
+    
+    <!-- PWA & Mobile Optimization -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Nexus IA">
+    <meta name="theme-color" content="#09090b">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="https://api.dicebear.com/7.x/bottts/svg?seed=nexus&backgroundColor=6366f1">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
-        // Configurer Tailwind pour utiliser la stratégie par classe
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -23,7 +38,6 @@
             }
         }
 
-        // Appliquer le thème immédiatement pour éviter le flash blanc
         if (localStorage.getItem('nexus_theme') === 'dark' || (!localStorage.getItem('nexus_theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
@@ -36,6 +50,8 @@
             background-color: #f4f4f5;
             color: #09090b;
             transition: background-color 0.3s ease, color 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: none;
         }
         .dark body {
             background-color: #09090b;
@@ -56,24 +72,16 @@
         .neon-border {
             box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
         }
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #d4d4d8;
-            border-radius: 10px;
-        }
-        .dark ::-webkit-scrollbar-thumb {
-            background: #27272a;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a1a1aa;
-        }
-        .dark ::-webkit-scrollbar-thumb:hover {
-            background: #3f3f46;
+        .safe-pb { padding-bottom: env(safe-area-inset-bottom); }
+        .safe-pt { padding-top: env(safe-area-inset-top); }
+        
+        ::-webkit-scrollbar { width: 0px; }
+        @media (min-width: 768px) {
+            ::-webkit-scrollbar { width: 6px; }
+            ::-webkit-scrollbar-thumb {
+                background: #27272a;
+                border-radius: 10px;
+            }
         }
     </style>
 <script type="importmap">

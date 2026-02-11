@@ -10,7 +10,10 @@ import {
   Monitor,
   Bell,
   Lock,
-  Globe
+  Globe,
+  Link as LinkIcon,
+  Copy,
+  Check
 } from 'lucide-react';
 import { User } from '../types';
 
@@ -32,6 +35,7 @@ const NexusSettings: React.FC<NexusSettingsProps> = ({
   setTheme 
 }) => {
   const [notifications, setNotifications] = useState(true);
+  const [copiedLink, setCopiedLink] = useState(false);
 
   const translations: any = {
     fr: {
@@ -46,7 +50,9 @@ const NexusSettings: React.FC<NexusSettingsProps> = ({
       logout: "Se déconnecter",
       notifications: "Notifications Push",
       privacy: "Confidentialité",
-      status: "Statut du compte"
+      status: "Statut du compte",
+      siteLink: "Lien du Nexus",
+      copyLink: "Copier l'URL"
     },
     en: {
       title: "Settings",
@@ -60,14 +66,23 @@ const NexusSettings: React.FC<NexusSettingsProps> = ({
       logout: "Log Out",
       notifications: "Push Notifications",
       privacy: "Privacy",
-      status: "Account Status"
+      status: "Account Status",
+      siteLink: "Nexus Link",
+      copyLink: "Copy URL"
     }
   };
 
   const t = translations[language] || translations.fr;
 
+  const copyUrl = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
+    if ('vibrate' in navigator) navigator.vibrate(20);
+  };
+
   return (
-    <div className="flex-1 overflow-y-auto p-8 animate-in fade-in slide-in-from-bottom-4 duration-500 relative z-10">
+    <div className="flex-1 overflow-y-auto p-4 md:p-8 animate-in fade-in slide-in-from-bottom-4 duration-500 relative z-10">
       <div className="max-w-4xl mx-auto space-y-8">
         <header className="flex items-center gap-4">
           <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border ${
@@ -81,7 +96,7 @@ const NexusSettings: React.FC<NexusSettingsProps> = ({
           </div>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-20 md:pb-0">
           {/* Apparence */}
           <section className="space-y-4">
             <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-2">
@@ -170,18 +185,24 @@ const NexusSettings: React.FC<NexusSettingsProps> = ({
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <div className="flex justify-between text-xs">
-                  <span className="text-zinc-500">{t.status}</span>
-                  <span className={`font-bold ${user.tier === 'elite' ? 'text-amber-500' : 'text-indigo-600'}`}>
-                    {user.tier.toUpperCase()}
-                  </span>
+              {/* Site URL Sharing */}
+              <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 space-y-2">
+                <div className="flex items-center gap-2 text-zinc-500 mb-1">
+                   <LinkIcon className="w-3.5 h-3.5" />
+                   <span className="text-[10px] font-bold uppercase tracking-widest">{t.siteLink}</span>
                 </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-zinc-500">{t.credits}</span>
-                  <span className={`font-bold ${theme === 'dark' ? 'text-zinc-300' : 'text-zinc-700'}`}>
-                    {user.credits === 999999 ? '∞' : user.credits}
-                  </span>
+                <div className={`flex items-center justify-between p-3 rounded-xl border ${
+                  theme === 'dark' ? 'bg-zinc-950/50 border-zinc-800' : 'bg-zinc-50 border-zinc-100'
+                }`}>
+                  <span className="text-[10px] font-mono text-zinc-400 truncate max-w-[150px]">{window.location.origin}</span>
+                  <button 
+                    onClick={copyUrl}
+                    className={`p-1.5 rounded-lg transition-all ${
+                      copiedLink ? 'bg-emerald-500/10 text-emerald-500' : 'hover:bg-indigo-500/10 text-indigo-500'
+                    }`}
+                  >
+                    {copiedLink ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  </button>
                 </div>
               </div>
 
@@ -203,7 +224,7 @@ const NexusSettings: React.FC<NexusSettingsProps> = ({
         </div>
 
         <div className="p-8 text-center space-y-2 opacity-50">
-          <p className="text-xs font-mono text-zinc-500 tracking-widest uppercase">Nexus Core v2.4.0 — Experimental Build</p>
+          <p className="text-xs font-mono text-zinc-500 tracking-widest uppercase">Nexus Core v2.5.1 — Distribution Build</p>
           <p className="text-[10px] text-zinc-500">© 2024 Nexus IA Technologies. All rights reserved.</p>
         </div>
       </div>
